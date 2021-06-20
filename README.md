@@ -8,6 +8,8 @@ On the other hand, I propose an Airflow Docker architecture so that we can autom
 
 The idea is that you can use Airflow as a service without actually doing it. That way, Airflow will run on its own inside the container, and each python project that is included in your dags flow will create a replica of the host python environment inside the docker. Thus, that project's dag will be able to activate the virtual python environment before running the project's scripts.
 
+**Also, since we are using volumes, if the Docker Container goes down, all project environments will remain intact because they will be saved within the host, not the container.**
+
 Down below you can checkout its architecture.
 
 <img src="./Airflow_Architecture.png" width="1000" alt="Architecture">
