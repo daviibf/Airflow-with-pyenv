@@ -1,0 +1,50 @@
+version: '3.3'
+services:
+  postgres:
+    build: './docker/postgres'
+    restart: always
+    container_name: postgres
+    logging:
+      driver: "json-file"
+      #options:
+      #    max-file: "5"
+      #    max-size: "10m"
+    ports:
+      - "32769:5432"
+    volumes:
+      - ./mnt/postgres:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow_db
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "airflow_db", "-U", "airflow" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+  airflow:
+    build: ./docker/airflow
+    restart: always
+    container_name: airflow
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+
+    volumes:
+      - ./mnt/airflow/airflow.cfg:/opt/airflow/airflow.cfg
+      - ./mnt/airflow/dags:/opt/airflow/dags
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "airflow", "8080" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    #depends_on: 
+    #  - postgres
+  
+# Change name of default network otherwise URI invalid for HIVE
+# because of the _ contained by default network
+networks:
+  default:
+    name: airflow_network
