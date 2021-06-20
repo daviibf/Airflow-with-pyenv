@@ -13,9 +13,8 @@ docker exec $dockerid bash -c "cd /opt/airflow/dags/scripts/project1/ ; /opt/air
 
 docker exec $dockerid bash -c "cd /opt/airflow/dags/scripts/project1/ ; source py369/bin/activate ; pip install -r requirements.txt"
 
-# Essa linha abaixo é para resolver um problema que as vezes acontece
-# quando trocamos de versão de python. Pra evitar que o airflow fique confuso
-# nós precisamos recompilar os *.pyc
+# This line below is to solve a problem that sometimes happens when we switch python versions. 
+# To prevent the airflow from getting confused we need to recompile the *.pyc files.
 # https://stackoverflow.com/questions/514371/whats-the-bad-magic-number-error
 
 docker exec $dockerid bash -c "find . -name '*.pyc' -delete"
