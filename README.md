@@ -14,13 +14,13 @@ Notice that we only create the py venv once for each project. After that, we onl
 
 Down below you can checkout its architecture.
 
-<img src="./Airflow_Architecture.png" width="1000" alt="Architecture">
+<img src="img/Airflow_Architecture.png" width="1000" alt="Architecture">
 
 To test the PoC above you must follow the following steps:
 
 1. Run: `docker-compose.yaml build && docker-compose up`
-2. Run: `bash pre_start.sh` to create the project's virtual environment inside the docker, activate it and install the `requirements.txt`.
-3. That done, you can run your dag. The dag will run `run_project_script.sh` which is responsible for activanting the py369 and running the script.
-4. If you are successful, a `pi.txt` file will appear inside `/mnt/airflow/dags/scripts/project1/`.
+2. Run: `bash mnt/airflow/dags/projects/example_project/example_postinst.sh` to create the project's virtual environment inside the docker, activate it and install the `requirements.txt`.
+3. That done, you can run your dag. The dag will run `run_example.sh` which is responsible for activanting the py369 and running the script.
+4. If you are successful, a `pi.txt` file will appear inside `/mnt/airflow/dags/scripts/project1/`. If not, a "Python Version" error will be printed out. 
 
 Obs: All the paths must be those from inside the container, since it volumes the path from the host into the container.
